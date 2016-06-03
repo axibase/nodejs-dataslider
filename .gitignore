@@ -1,5 +1,4 @@
 node_modules/
-config.js
 cache/
 npm-debug.log
 atsd.properties

@@ -1,0 +1,148 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link rel="shortcut icon" href="//axibase.com/favicon.ico"/>
+
+    <link rel="stylesheet" type="text/css" href="//apps-chartlab.axibase.com/chartlab/portal/CSS/charts.min.css"/>
+
+    <link rel="stylesheet" type="text/css" href="//fonts.googleapis.com/css?family=Open+Sans">
+
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/jquery/2.1.4/jquery.js"></script>
+    <script type="text/javascript"
+            src="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.0.0/js/bootstrap.min.js"></script>
+
+    <link rel="stylesheet" type="text/css"
+          href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap.min.css"/>
+    <link rel="stylesheet" type="text/css"
+          href="//cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/3.3.5/css/bootstrap-theme.min.css"/>
+    <link rel="stylesheet" type="text/css" href="../css/general.css"/>
+
+    <script type="text/javascript" src="//cdnjs.cloudflare.com/ajax/libs/d3/3.4.11/d3.min.js"></script>
+    <script type="text/javascript" src="//apps-chartlab.axibase.com/chartlab/portal/JavaScript/portal_init.js"></script>
+    <script type="text/javascript" src="//apps-chartlab.axibase.com/chartlab/portal/JavaScript/charts.min.js"></script>
+    <script type="text/javascript" src="//apps-chartlab.axibase.com/chartlab/portal/JavaScript/initialize.js"></script>
+
+    <script type="text/javascript" src="../js/async.js"></script>
+    <script type="text/javascript" src="../js/parser.js"></script>
+    <script type="text/javascript" src="../js/jquery-bigtext.js"></script>
+
+    <script type="text/javascript" src="../js/main.js"></script>
+</head>
+
+<body onLoad="onBodyLoad(); everythingElse()">
+<nav class="navbar navbar-default navbar-fixed-top" id="navbar-top" style="display: none">
+    <div class="container-fluid">
+        <ul class="nav navbar-nav navbar-left">
+            <li>
+                <a href="javascript:;" style="margin-left: -25px" id="alter"><i
+                        class="glyphicon glyphicon-menu-hamburger"></i></a>
+            </li>
+
+            <li style="position: fixed; display:block">
+                <a href="javascript:goToSlide(0)"
+                   style="outline: none; margin: 12px 12px; padding: 0; position: fixed;">
+                    <img src="https://axibase.com/atsd/axibase_logo_blue.gif"
+                         id="logo"
+                         title="logo"
+                         style="outline: none"
+                         onload>
+                </a>
+            </li>
+        </ul>
+
+        <div class="nav navbar-nav navbar-brand upper-brand" id="big-text"><b id="title"></b></div>
+
+        <ul class="nav navbar-nav navbar-right">
+            <li>
+                <a role="button" id="fullscreen">
+                    <i class="glyphicon glyphicon-fullscreen"></i>
+                </a>
+            </li>
+        </ul>
+    </div>
+</nav>
+
+<nav class="navbar navbar-default navbar-fixed-top" id="navbar-top-r" style="display: none">
+    <div class="container-fluid">
+        <div class="nav navbar-nav navbar-brand upper-brand" id="big-text-r"><b id="title-r"></b></div>
+    </div>
+</nav>
+
+<nav class="navbar" id="navbar-top-m" style="display: none">
+</nav>
+
+<div id="slide-panel">
+    <div class="panel-group" id="accordion"></div>
+</div>
+
+<div class="outer-view" id="outer-view">
+    <div class="view" id="view" align="center"></div>
+</div>
+
+<footer class="navbar navbar-default footer" id="navbar-bottom" style="display: none">
+    <div class="container-fluid">
+        <div class="navbar-brand text-muted" align="center" id="footnote">
+            <a href="javascript:goToPreviousSection(slide)">
+                <span class="glyphicon glyphicon-fast-backward"></span>
+            </a>
+
+            <a href="javascript:goToSlide(slide - 1)">
+                <span class="glyphicon glyphicon-backward"></span>
+            </a>
+
+            <a href="javascript:play()" id="play">
+                <span class="glyphicon glyphicon-play"></span>
+            </a>
+
+            <a href="javascript:goToSlide(slide + 1)">
+                <span class="glyphicon glyphicon-forward"></span>
+            </a>
+
+            <a href="javascript:goToNextSection(slide)">
+                <span class="glyphicon glyphicon-fast-forward"></span>
+            </a>
+        </div>
+
+        <ul class="nav navbar-nav navbar-left">
+            <li class="nav navbar-nav navbar-text" id="copy">
+                <b>&copy; Axibase | Data Source: <a href="http://energinet.dk" target="_blank">Energinet.dk</a></b>
+            </li>
+        </ul>
+
+        <ul class="nav navbar-nav navbar-right">
+            <li class="nav navbar-nav navbar-text" id="page-number">
+            </li>
+        </ul>
+    </div>
+</footer>
+
+<footer class="navbar navbar-default footer-r" id="navbar-bottom-r" style="display: none">
+    <div class="container-fluid">
+        <div class="navbar-brand text-muted" align="center" id="footnote-r">
+            <a href="javascript:goToPreviousSection(slide)">
+                <span class="glyphicon glyphicon-fast-backward"></span>
+            </a>
+
+            <a href="javascript:goToSlide(slide - 1)">
+                <span class="glyphicon glyphicon-backward"></span>
+            </a>
+
+            <text id="page-number-r">
+            </text>
+
+            <a href="javascript:goToSlide(slide + 1)">
+                <span class="glyphicon glyphicon-forward"></span>
+            </a>
+
+            <a href="javascript:goToNextSection(slide)">
+                <span class="glyphicon glyphicon-fast-forward"></span>
+            </a>
+        </div>
+    </div>
+</footer>
+</body>
+</html>

@@ -1,0 +1,194 @@
+[
+  {
+    "entity": "energinet.dk",
+    "metric": "primary_production",
+    "tags": {
+      "name": [
+        "DK-West"
+      ]
+    },
+    "last": false,
+    "cache": false,
+    "aggregate": {
+      "types": [
+        "SUM"
+      ],
+      "interval": {
+        "count": 1,
+        "unit": "DAY"
+      }
+    },
+    "startDate": "2015-01-01T00:00:00.000Z",
+    "endDate": "2016-01-01T00:00:00.000Z",
+    "requestId": "0",
+    "timeFormat": "milliseconds"
+  },
+  {
+    "entity": "energinet.dk",
+    "metric": "primary_production",
+    "tags": {
+      "name": [
+        "DK-East"
+      ]
+    },
+    "last": false,
+    "cache": false,
+    "aggregate": {
+      "types": [
+        "SUM"
+      ],
+      "interval": {
+        "count": 1,
+        "unit": "DAY"
+      }
+    },
+    "startDate": "2015-01-01T00:00:00.000Z",
+    "endDate": "2016-01-01T00:00:00.000Z",
+    "requestId": "1",
+    "timeFormat": "milliseconds"
+  },
+  {
+    "entity": "energinet.dk",
+    "metric": "local_production",
+    "tags": {
+      "name": [
+        "DK-West"
+      ]
+    },
+    "last": false,
+    "cache": false,
+    "aggregate": {
+      "types": [
+        "SUM"
+      ],
+      "interval": {
+        "count": 1,
+        "unit": "DAY"
+      }
+    },
+    "startDate": "2015-01-01T00:00:00.000Z",
+    "endDate": "2016-01-01T00:00:00.000Z",
+    "requestId": "2",
+    "timeFormat": "milliseconds"
+  },
+  {
+    "entity": "energinet.dk",
+    "metric": "local_production",
+    "tags": {
+      "name": [
+        "DK-East"
+      ]
+    },
+    "last": false,
+    "cache": false,
+    "aggregate": {
+      "types": [
+        "SUM"
+      ],
+      "interval": {
+        "count": 1,
+        "unit": "DAY"
+      }
+    },
+    "startDate": "2015-01-01T00:00:00.000Z",
+    "endDate": "2016-01-01T00:00:00.000Z",
+    "requestId": "3",
+    "timeFormat": "milliseconds"
+  },
+  {
+    "entity": "energinet.dk",
+    "metric": "wind_power_production",
+    "tags": {
+      "name": [
+        "DK-West"
+      ]
+    },
+    "last": false,
+    "cache": false,
+    "aggregate": {
+      "types": [
+        "SUM"
+      ],
+      "interval": {
+        "count": 1,
+        "unit": "DAY"
+      }
+    },
+    "startDate": "2015-01-01T00:00:00.000Z",
+    "endDate": "2016-01-01T00:00:00.000Z",
+    "requestId": "4",
+    "timeFormat": "milliseconds"
+  },
+  {
+    "entity": "energinet.dk",
+    "metric": "wind_power_production",
+    "tags": {
+      "name": [
+        "DK-East"
+      ]
+    },
+    "last": false,
+    "cache": false,
+    "aggregate": {
+      "types": [
+        "SUM"
+      ],
+      "interval": {
+        "count": 1,
+        "unit": "DAY"
+      }
+    },
+    "startDate": "2015-01-01T00:00:00.000Z",
+    "endDate": "2016-01-01T00:00:00.000Z",
+    "requestId": "5",
+    "timeFormat": "milliseconds"
+  },
+  {
+    "entity": "energinet.dk",
+    "metric": "solar_cell_production_(estimated)",
+    "tags": {
+      "name": [
+        "DK-West"
+      ]
+    },
+    "last": false,
+    "cache": false,
+    "aggregate": {
+      "types": [
+        "SUM"
+      ],
+      "interval": {
+        "count": 1,
+        "unit": "DAY"
+      }
+    },
+    "startDate": "2015-01-01T00:00:00.000Z",
+    "endDate": "2016-01-01T00:00:00.000Z",
+    "requestId": "6",
+    "timeFormat": "milliseconds"
+  },
+  {
+    "entity": "energinet.dk",
+    "metric": "solar_cell_production_(estimated)",
+    "tags": {
+      "name": [
+        "DK-East"
+      ]
+    },
+    "last": false,
+    "cache": false,
+    "aggregate": {
+      "types": [
+        "SUM"
+      ],
+      "interval": {
+        "count": 1,
+        "unit": "DAY"
+      }
+    },
+    "startDate": "2015-01-01T00:00:00.000Z",
+    "endDate": "2016-01-01T00:00:00.000Z",
+    "requestId": "7",
+    "timeFormat": "milliseconds"
+  }
+]
