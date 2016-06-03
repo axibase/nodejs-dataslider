@@ -4,7 +4,7 @@ var _ = require('lodash');
 var fs = require('node-fs');
 var crypto = require('crypto');
 var mime = require('mime');
-var Series = require('../atsd-api-nodejs').Series;
+var Series = require('atsd-api').Series;
 var path = require('fs');
 var async = require('./js/async');
 var Parser = require('./js/parser').Parser;
@@ -794,14 +794,12 @@ function setUpServer(req, res, options) {
 }
 
 function startServer(properties) {
-
     var options = {
         url: properties.get('atsd.url'),
         user: properties.get('atsd.user'),
         password: properties.get('atsd.password')
     };
-    console.log (options);
-
+    
     var series = new Series(options);
     var server = http.createServer(function (req, res) {
         setUpServer(req,res, options);
