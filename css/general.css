@@ -1,0 +1,283 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+body {
+    overflow: auto !important;
+    font-family: 'Open Sans';
+    outline: none;
+    min-height:100%;
+}
+
+html, body {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
+}
+
+[class^="widget"] {
+    /*	border: 1px dotted black;*/
+    display: inline-block;
+    vertical-align: top;
+    position: relative;
+}
+
+[class^="widget-table"], [class^="widget-console"], [class^="widget-property"] {
+    height: auto !important;
+}
+
+.axi-tooltip-container {
+    z-index: -1
+}
+
+.container {
+    margin: 0
+}
+
+.navbar {
+    margin: 0;
+}
+
+.navbar-brand {
+    position: absolute;
+    width: 100%;
+    left: 0;
+    right: 0;
+    text-align: center;
+    margin: 0 0 0 0;
+}
+
+.navbar > .container-fluid .navbar-brand {
+    margin: 0 0 0 0;
+}
+
+#logo {
+    text-align: left;
+}
+
+#title {
+    font-family: 'Open Sans';
+}
+
+.axi-chart-background:not([stroke]), .axi-chart-axis line:not([stroke]), .axi-chart-axis path:not([stroke]) {
+    stroke: none;
+}
+
+.axi-table-cell, .axi-table-thead, .axi-table-tbody {
+    font-family: 'Open Sans';
+    border-style: solid;
+    border-color: white;
+}
+
+.axi-table-td {
+    padding: 5px 10px 5px 10px;
+    font-size: 150%;
+    font-family: 'Open Sans';
+}
+
+.axi-table-th {
+    padding: 5px 10px 5px 10px;
+    font-size: 200%;
+    font-family: 'Open Sans' ';
+}
+
+.axi-controls-item,
+.axi-chart-axis-left,
+.axi-chart-axis-right,
+.axi-chart-axis-bottom,
+.plain-text,
+.plain-title,
+.title,
+.subtitle {
+    font-size: 150%;
+    font-family: 'Open Sans';
+}
+
+.axi-chart-axis-left {
+    font-family: 'Open Sans';
+}
+
+.axi-table-container {
+    height: 100% !important;
+}
+
+.title, .subtitle {
+    padding: 10px 10px 10px 10px;
+}
+
+.title {
+    font-size: 400%;
+    font-weight: bold;
+}
+
+.subtitle {
+    font-size: 200%;
+}
+
+.outer-view {
+    display: -webkit-box;
+    display: -moz-box;
+    display: -ms-flexbox;
+    display: -webkit-flex;
+    margin-left: auto;
+    margin-right: auto;
+    display: flex;
+    justify-content: center;
+    align-items:center;
+    flex-direction: column;
+    width: 75%;
+}
+
+.view {
+    margin-top: 75px;
+    margin-bottom: 75px;
+    width: 100%;
+}
+
+.footer {
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+    font-family: Open Sans;
+}
+
+.footer-r {
+    /*position: absolute;*/
+    bottom: 0;
+    width: 100%;
+    height: 50px;
+    font-family: Open Sans;
+}
+
+.item {
+    font-size: 12px;
+}
+
+.plain-block {
+    width: 75%;
+}
+
+.plain-title {
+    font-size: 200%;
+    font-weight: bold;
+}
+
+ul {
+    display: table;
+    margin: 0 auto;
+    font-family: 'Open Sans';
+}
+
+h3 {
+    font-family: 'Open Sans';
+}
+
+#title, #title-r {
+    color: crimson;
+}
+
+.upper-brand {
+    pointer-events: none;
+}
+
+#footnote, #footnote-r {
+    font-size: 150%;
+}
+
+span {
+    width: 30px;
+}
+
+.glyphicon-menu-hamburger {
+    width: 10px;
+}
+
+#slide-panel {
+    width:300px;
+    margin-left:-300px;
+    float: left;
+    max-width: 300px;
+    margin-top: 50px;
+}
+
+#opener {
+    float: right;
+    margin: 0 -40px 0 0;
+    border-radius: 0;
+}
+
+a::-moz-focus-inner {
+    outline: none;
+    border: none;
+    text-decoration: none;
+}
+
+a:active,
+a:focus,
+a:hover,
+a:link,
+a:visited {
+    outline: none;
+    border: none;
+    text-decoration: none;
+}
+
+.open {
+    font-weight: bold;
+}
+
+.panel-collapse {
+    height: auto;
+}
+
+.panel-body {
+    max-height: 300px;
+    overflow-y: scroll;
+}
+
+.navbar-text {
+    margin: 0 0 0 0;
+}
+
+#copy {
+    margin: 15px 0;
+}
+
+#page-number {
+    margin-top: 10px;
+    margin-right: 20px;
+    margin-left: 0;
+    font-size: 150%;
+}
+
+input {
+    width: 40px;
+    text-align: right;
+    padding: 0 0 0 0;
+}
+
+#page-number-r {
+    margin-bottom: 400px;
+}
+
+.square {
+    display:inline-block;
+    width:20px;
+    height:20px;
+    margin-bottom:-5px;
+}
+
+.legend {
+    display:inline-block;
+}
+
+div {
+    overflow: -moz-scrollbars-none !important;
+    -ms-overflow-style: none;
+}
+
+div::-webkit-scrollbar {
+    display: none;
+}
