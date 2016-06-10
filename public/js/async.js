@@ -19,11 +19,11 @@
     return !v;
   }
 
-  // global on the server, window in the browser
+  // global on the fileHelper, window in the browser
   var previous_async;
 
   // Establish the root object, `window` (`self`) in the browser, `global`
-  // on the server, or `this` in some virtual machines. We use `self`
+  // on the fileHelper, or `this` in some virtual machines. We use `self`
   // instead of `window` for `WebWorker` support.
   var root = typeof self === 'object' && self.self === self && self ||
     typeof global === 'object' && global.global === global && global ||

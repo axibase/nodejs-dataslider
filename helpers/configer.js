@@ -3,7 +3,7 @@ var logger = require('npmlog');
 var async = require('async');
 var appRoot = require('app-root-path');
 var fs = require('fs');
-var Parser = require('./../js/parser').Parser;
+var Parser = require('./../public/js/parser').Parser;
 
 
 var sequence = {};
@@ -238,70 +238,68 @@ function getTitle(path, callback) {
 }
 
 function getIndex(dir, callback) {
-    try {
-        var index = [];
+    function getPages(fullPath) {
+        var pathParts = fullPath.split('/');
+        var path = pathParts[pathParts.length - 1];
+        var paths = [];
 
-        function getPages(fullPath) {
-            var pathParts = fullPath.split('/');
-            var path = pathParts[pathParts.length - 1];
-            var paths = [];
+        var lines = ('' + fs.readFileSync(fullPath)).split('\n');
 
-            var lines = ('' + fs.readFileSync(fullPath)).split('\n');
+        var single = true;
 
-            var single = true;
+        for (var l = 0; l < lines.length; l++) {
+            var line = lines[l].trim();
 
-            for (var l = 0; l < lines.length; l++) {
-                var line = lines[l].trim();
-
-                if (/^\[.*\]/.test(line) && line !== '[repeat]') {
-                    break;
-                }
-
-                if (/^i *= *.*\.\..*/.test(line)) {
-                    var nameValue = line.split('=');
-                    if (nameValue.length !== 2) break;
-
-                    var startEnd = nameValue[1].split('..');
-                    if (startEnd.length !== 2) break;
-
-                    var start = parseInt(startEnd[0].trim());
-                    var end = parseInt(startEnd[1].trim());
-
-                    if (isNaN(start) || isNaN(end) || start > end) break;
-
-                    single = false;
-
-                    for (var i = start; i <= end; i++) {
-                        paths.push(path + '?i=' + i);
-                    }
-
-                    break;
-                } else if (/^v *= *\[.*\]/.test(line)) {
-                    nameValue = line.split('=');
-                    if (nameValue.length !== 2) break;
-
-                    single = false;
-
-                    var value = nameValue[1].trim();
-                    value = value.substr(1, value.length - 2);
-
-                    var options = value.split(',');
-
-                    for (var o = 0; o < options.length; o++) {
-                        paths.push(path + '?v=' + options[o].trim());
-                    }
-
-                    break;
-                }
+            if (/^\[.*\]/.test(line) && line !== '[repeat]') {
+                break;
             }
 
-            if (single) {
-                paths.push(path);
-            }
+            if (/^i *= *.*\.\..*/.test(line)) {
+                var nameValue = line.split('=');
+                if (nameValue.length !== 2) break;
 
-            return paths;
+                var startEnd = nameValue[1].split('..');
+                if (startEnd.length !== 2) break;
+
+                var start = parseInt(startEnd[0].trim());
+                var end = parseInt(startEnd[1].trim());
+
+                if (isNaN(start) || isNaN(end) || start > end) break;
+
+                single = false;
+
+                for (var i = start; i <= end; i++) {
+                    paths.push(path + '?i=' + i);
+                }
+
+                break;
+            } else if (/^v *= *\[.*\]/.test(line)) {
+                nameValue = line.split('=');
+                if (nameValue.length !== 2) break;
+
+                single = false;
+
+                var value = nameValue[1].trim();
+                value = value.substr(1, value.length - 2);
+
+                var options = value.split(',');
+
+                for (var o = 0; o < options.length; o++) {
+                    paths.push(path + '?v=' + options[o].trim());
+                }
+
+                break;
+            }
         }
 
+        if (single) {
+            paths.push(path);
+        }
+
+        return paths;
+    }
+    try {
+        var index = [];
         var confDir = '.' + dir + '/conf/';
         var sections = fs.readdirSync(confDir);
 
