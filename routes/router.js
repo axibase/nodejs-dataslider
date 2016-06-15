@@ -20,8 +20,12 @@ module.exports = (function() {
     var dirs = [];
 
     config.configFolders.forEach(function(configDir) {
-        router.get('/' + configDir + '?\/', function(req, res) {
-            res.sendFile(appRoot + '/public/index.htm');
+        router.get('/' + configDir + '/', function(req, res) {
+            if (req.url.substr(-1) !== '/' && req.url.length > 1) {
+                res.redirect(req.url +  '/');
+            } else {
+                res.sendFile(appRoot + '/public/index.htm');
+            }
         });
 
         router.get('/' + configDir + '/title.htm', function(req, res) {

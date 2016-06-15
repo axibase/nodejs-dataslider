@@ -29,7 +29,6 @@ Cacher.prototype.cache = function(req, callback) {
                             logger.error('Cache: ', 'failed to create cache folder %j! %j', _this._cacheFolder, err);
                             throw err;
                         }
-                        callback(err, false, null);
                     });
                 }
                 callback(null, false, filename);
