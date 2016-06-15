@@ -5,13 +5,11 @@ var appRoot = require('app-root-path');
 var fs = require('fs');
 var Parser = require('./../public/js/parser').Parser;
 
-
 var sequence = {};
 var index = {};
 var parameters = {};
 var dirs = [];
 exports.createIndex = createIndex;
-
 
 function parseConfig(clConfig) {
     var types = [
@@ -61,12 +59,12 @@ function parseConfig(clConfig) {
                         config[type] = ['[widget]\n'];
                     }
                 } else {
-                    config['group'][config['group'].length - 1]++;
+                    config.group[config.group.length - 1]++;
 
                     if (config.hasOwnProperty('widget')) {
-                        config['widget'].push('[widget]\n');
+                        config.widget.push('[widget]\n');
                     } else {
-                        config['widget'] = ['[widget]\n'];
+                        config.widget = ['[widget]\n'];
                     }
                 }
             } else if (possibleType === 'index') {
@@ -89,33 +87,33 @@ function parseConfig(clConfig) {
                 }
             }
         } else {
-            if (type === 'else') {
+            if (type !== 'else') {
+                if (type === 'configuration') {
+                    var nameValue = lineTrimmed.split('=');
 
-            } else if (type === 'configuration') {
-                var nameValue = lineTrimmed.split('=');
+                    if (nameValue.length === 2) {
+                        config[type][nameValue[0].trim()] = nameValue[1].trim();
+                    }
+                } else if (type === 'widget' || type === 'group') {
+                    var widgets = config.widget;
+                    widgets[widgets.length - 1] += line + '\n';
+                } else if (type === 'index') {
+                    var indices = config[type];
+                    var slideTitle = lineTrimmed.split('=');
 
-                if (nameValue.length === 2) {
-                    config[type][nameValue[0].trim()] = nameValue[1].trim();
-                }
-            } else if (type === 'widget' || type === 'group') {
-                var widgets = config['widget'];
-                widgets[widgets.length - 1] += line + '\n';
-            } else if (type === 'index') {
-                var indices = config[type];
-                var slideTitle = lineTrimmed.split('=');
+                    if (slideTitle.length === 2) {
+                        indices[indices.length - 1].push({
+                            slide: parseInt(slideTitle[0].trim()),
+                            title: slideTitle[1].trim()
+                        });
+                    }
+                } else if (type === 'text') {
+                    var texts = config[type];
+                    var bsBullet = lineTrimmed.split('=');
 
-                if (slideTitle.length === 2) {
-                    indices[indices.length - 1].push({
-                        slide: parseInt(slideTitle[0].trim()),
-                        title: slideTitle[1].trim()
-                    });
-                }
-            } else if (type === 'text') {
-                var texts = config[type];
-                var bsBullet = lineTrimmed.split('=');
-
-                if (bsBullet.length === 2) {
-                    texts[texts.length - 1].push(bsBullet[1]);
+                    if (bsBullet.length === 2) {
+                        texts[texts.length - 1].push(bsBullet[1]);
+                    }
                 }
             }
         }
@@ -128,7 +126,7 @@ function getConfig(path, callback) {
     var urlParam = path.split('?');
 
     if (urlParam.length < 3) {
-        fs.readFile('.' + urlParam[0], function (error, config) {
+        fs.readFile('.' + urlParam[0], function(error, config) {
             if (!error) {
                 config += '';
 
@@ -136,18 +134,25 @@ function getConfig(path, callback) {
                     var nameValue = urlParam[1].split('=');
 
                     if (nameValue.length === 2) {
+                        var expressions;
+                        var e;
+                        var expr;
+                        var value;
                         if (nameValue[0].trim() === 'i') {
-                            var value = parseInt(nameValue[1].trim());
+                            value = parseInt(nameValue[1].trim());
 
                             if (!isNaN(value)) {
-                                var expressions = config.match(/\$\{[^\}]*\}/g);
-                                expressions = expressions == null ? [] : expressions;
+                                expressions = config.match(/\$\{[^\}]*\}/g);
+                                expressions = expressions === null ? [] : expressions;
 
-                                for (var e = 0; e < expressions.length; e++) {
-                                    var expr = expressions[e];
+                                for (e = 0; e < expressions.length; e++) {
+                                    expr = expressions[e];
 
                                     config = config.replace(expr,
-                                        Parser.parse(expr.substr(2, expr.length - 3).replace('i', '' + value)).evaluate({})
+                                        Parser
+                                            .parse(expr.substr(2, expr.length - 3)
+                                            .replace('i', value.toString()))
+                                            .evaluate({})
                                     );
                                 }
                             }
@@ -164,18 +169,21 @@ function getConfig(path, callback) {
                             }
 
                             expressions = config.match(/\$\{[^\}]*\}/g);
-                            expressions = expressions == null ? [] : expressions;
+                            expressions = expressions === null ? [] : expressions;
 
                             for (e = 0; e < expressions.length; e++) {
                                 expr = expressions[e];
-                                var newExpr = expr.replace('v_index', '' + (options.indexOf(value) + 1));
+                                var newExpr = expr.replace('v_index', (options.indexOf(value) + 1).toString());
 
                                 config = config.replace(expr, newExpr);
 
                                 var newNewExpr;
 
                                 try {
-                                    newNewExpr = Parser.parse(newExpr.substr(2, newExpr.length - 3).replace('v', value)).evaluate({});
+                                    newNewExpr = Parser
+                                        .parse(newExpr.substr(2, newExpr.length - 3)
+                                        .replace('v', value.toString()))
+                                        .evaluate({});
                                 } catch (err) {
                                     try {
                                         newNewExpr = newExpr.substr(2, newExpr.length - 3).replace('v', value);
@@ -195,7 +203,7 @@ function getConfig(path, callback) {
 
                 config = config.substr(repeatLength, config.length - repeatLength);
 
-                callback(config)
+                callback(config);
             } else {
                 logger.info(error);
             }
@@ -205,9 +213,10 @@ function getConfig(path, callback) {
 
 function getTitle(path, callback) {
     if (/^.*\.config/.test(path)) {
-        getConfig(path, function (config) {
-            if (config === '') return;
-
+        getConfig(path, function(config) {
+            if (config === '') {
+                return;
+            }
             var title = parseConfig(config).configuration !== undefined ? parseConfig(config).configuration.title : '';
 
             callback('', {
@@ -216,9 +225,10 @@ function getTitle(path, callback) {
             });
         });
     } else if (/^.*\.htm/.test(path) || /^.*\.html/.test(path)) {
-        getConfig(path, function (config) {
-            if (config === '') return;
-
+        getConfig(path, function(config) {
+            if (config === '') {
+                return;
+            }
             var title = '';
             var titles = config.match(/<title>.*<\/ *title>/g);
 
@@ -243,7 +253,7 @@ function getIndex(dir, callback) {
         var path = pathParts[pathParts.length - 1];
         var paths = [];
 
-        var lines = ('' + fs.readFileSync(fullPath)).split('\n');
+        var lines = (fs.readFileSync(fullPath)).toString().split('\n');
 
         var single = true;
 
@@ -253,18 +263,24 @@ function getIndex(dir, callback) {
             if (/^\[.*\]/.test(line) && line !== '[repeat]') {
                 break;
             }
-
+            var nameValue;
             if (/^i *= *.*\.\..*/.test(line)) {
-                var nameValue = line.split('=');
-                if (nameValue.length !== 2) break;
+                nameValue = line.split('=');
+                if (nameValue.length !== 2) {
+                    break;
+                }
 
                 var startEnd = nameValue[1].split('..');
-                if (startEnd.length !== 2) break;
+                if (startEnd.length !== 2) {
+                    break;
+                }
 
                 var start = parseInt(startEnd[0].trim());
                 var end = parseInt(startEnd[1].trim());
 
-                if (isNaN(start) || isNaN(end) || start > end) break;
+                if (isNaN(start) || isNaN(end) || start > end) {
+                    break;
+                }
 
                 single = false;
 
@@ -275,7 +291,9 @@ function getIndex(dir, callback) {
                 break;
             } else if (/^v *= *\[.*\]/.test(line)) {
                 nameValue = line.split('=');
-                if (nameValue.length !== 2) break;
+                if (nameValue.length !== 2) {
+                    break;
+                }
 
                 single = false;
 
@@ -298,6 +316,7 @@ function getIndex(dir, callback) {
 
         return paths;
     }
+
     try {
         var index = [];
         var confDir = '.' + dir + '/conf/';
@@ -305,7 +324,9 @@ function getIndex(dir, callback) {
 
         for (var s = 0; s < sections.length; s++) {
             var section = sections[s];
-
+            var allPages;
+            var p;
+            var pp;
             if (fs.lstatSync(confDir + section).isDirectory()) {
                 index.push({
                     folder: section,
@@ -314,10 +335,10 @@ function getIndex(dir, callback) {
 
                 var pages = fs.readdirSync(confDir + section);
 
-                for (var p = 0; p < pages.length; p++) {
-                    var allPages = getPages(confDir + section + '/' + pages[p]);
+                for (p = 0; p < pages.length; p++) {
+                    allPages = getPages(confDir + section + '/' + pages[p]);
 
-                    for (var pp = 0; pp < allPages.length; pp++) {
+                    for (pp = 0; pp < allPages.length; pp++) {
                         index[index.length - 1].pages.push(allPages[pp]);
                     }
                 }
@@ -338,18 +359,22 @@ function getIndex(dir, callback) {
 }
 
 function loadIndex(titleIndex, dir, callback) {
-    fs.readFile(appRoot + dir + '/index.config', function (error_index, clIndex) {
-        fs.readFile(appRoot + dir + '/param.config', function (error_config, config) {
+    fs.readFile(appRoot + dir + '/index.config', function(errorIndex, clIndex) {
+        fs.readFile(appRoot + dir + '/param.config', function(errorConfig, config) {
             index[dir] = [];
             sequence[dir] = [];
             parameters[dir] = {};
 
-            var lines = ('' + config).split('\n');
-
+            var lines = config.toString().split('\n');
+            var line;
+            var section;
+            var href;
             for (var l = 0; l < lines.length; l++) {
-                var line = lines[l].trim();
+                line = lines[l].trim();
 
-                if (line === '') continue;
+                if (line === '') {
+                    continue;
+                }
 
                 var nameValue = line.split('=');
 
@@ -358,15 +383,14 @@ function loadIndex(titleIndex, dir, callback) {
                 }
             }
 
-            lines = ('' + clIndex).split('\n');
+            lines = clIndex.toString().split('\n');
 
             var pageMode = true;
-
             for (l = 0; l < lines.length; l++) {
                 line = lines[l].trim();
-
-                if (line === '') continue;
-
+                if (line === '') {
+                    continue;
+                }
                 if (/^\[.*\]/.test(line)) {
                     if (line === '[section]') {
                         index[dir].push({
@@ -390,14 +414,13 @@ function loadIndex(titleIndex, dir, callback) {
                             if (param === 'file') {
                                 var hrefBase = slideTitle[1].trim();
 
-                                for (var href in titleIndex) {
-                                    if (!titleIndex.hasOwnProperty(href)) continue;
-
-                                    if (
-                                        href === hrefBase
-                                        || (href.length > hrefBase.length
-                                        && href.substr(0, hrefBase.length) === hrefBase
-                                        && href[hrefBase.length] === '?')
+                                for (href in titleIndex) {
+                                    if (!titleIndex.hasOwnProperty(href)) {
+                                        continue;
+                                    }
+                                    if (href === hrefBase || (href.length > hrefBase.length &&
+                                        href.substr(0, hrefBase.length) === hrefBase &&
+                                        href[hrefBase.length] === '?')
                                     ) {
                                         index[dir].push({
                                             href: href,
@@ -407,7 +430,7 @@ function loadIndex(titleIndex, dir, callback) {
                                 }
                             }
                         } else {
-                            var section = index[dir][index[dir].length - 1];
+                            section = index[dir][index[dir].length - 1];
 
                             if (param === 'title') {
                                 section.title = slideTitle[1].trim();
@@ -462,9 +485,10 @@ function loadIndex(titleIndex, dir, callback) {
 }
 
 function createIndex(dir, callback) {
-    getIndex(dir, function (fileIndex) {
-        if (fileIndex === '') return;
-
+    getIndex(dir, function(fileIndex) {
+        if (fileIndex === '') {
+            return;
+        }
         var titleIndex = {};
         var paths = [];
 
@@ -490,7 +514,7 @@ function createIndex(dir, callback) {
             }
         }
 
-        async.map(paths, getTitle, function (err, paths) {
+        async.map(paths, getTitle, function(err, paths) {
             var titleByPath = {};
 
             for (var t = 0; t < paths.length; t++) {
@@ -499,12 +523,14 @@ function createIndex(dir, callback) {
             }
 
             for (var section in titleIndex) {
-                if (!titleIndex.hasOwnProperty(section)) continue;
-
+                if (!titleIndex.hasOwnProperty(section)) {
+                    continue;
+                }
                 if (typeof titleIndex[section] !== 'string') {
                     for (var page in titleIndex[section]) {
-                        if (!titleIndex[section].hasOwnProperty(page)) continue;
-
+                        if (!titleIndex[section].hasOwnProperty(page)) {
+                            continue;
+                        }
                         titleIndex[section][page] = titleByPath[dir + '/conf/' + page];
                     }
                 } else {

@@ -3,13 +3,9 @@ var fs = require('fs');
 var appRoot = require('app-root-path');
 var logger = require('npmlog');
 var PropertiesReader = require('properties-reader');
-
-
-
 exports.checkPath = checkPath;
 exports.readFile = readFile;
 exports.readApiOptions = readApiOptions;
-
 
 function checkPath(filePath) {
     return fs.existsSync(filePath);
@@ -18,7 +14,7 @@ function checkPath(filePath) {
 function readApiOptions() {
     var options = null;
     var propertiesFile = appRoot + '/atsd.properties';
-    logger.info('API', 'Using properties file: %j',propertiesFile);
+    logger.info('API', 'Using properties file: %j', propertiesFile);
     try {
         if (checkPath(propertiesFile)) {
             var properties = PropertiesReader(propertiesFile);

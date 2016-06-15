@@ -1,11 +1,10 @@
 {
   "preset": "google",
-  "fileExtensions": [".js", "jscs"],
+  "fileExtensions": [".js"],
 
   "requireSemicolons": true,
   "requireParenthesesAroundIIFE": true,
   "maximumLineLength": 120,
-  "validateLineBreaks": "LF",
   "validateIndentation": 4,
   "disallowTrailingComma": true,
   "disallowUnusedParams": true,
@@ -14,6 +13,7 @@
   "disallowImplicitTypeConversion": ["string"],
 
   "safeContextKeyword": "_this",
+
 
   "jsDoc": {
     "checkAnnotations": "closurecompiler",

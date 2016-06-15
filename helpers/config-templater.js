@@ -10,20 +10,19 @@ function oldTranslate(config, v, i, callback) {
     config += '';
 
     if (v || i) {
-
+        var expressions = config.match(/\$\{[^\}]*\}/g);
+        var e = 0;
+        var expr = null;
         if (i) {
-            var expressions = config.match(/\$\{[^\}]*\}/g);
-            expressions = expressions == null ? [] : expressions;
-
-            for (var e = 0; e < expressions.length; e++) {
-                var expr = expressions[e];
+            expressions = expressions === null ? [] : expressions;
+            for (e = 0; e < expressions.length; e++) {
+                expr = expressions[e];
 
                 config = config.replace(expr,
-                    Parser.parse(expr.substr(2, expr.length - 3).replace('i', '' + i)).evaluate()
+                    Parser.parse(expr.substr(2, expr.length - 3).replace('i', i.toString())).evaluate()
                 );
             }
-        }
-        else if (v) {
+        } else if (v) {
             var optionLine = config.match(/v *= *\[[^\]]*\]/)[0];
             var left = optionLine.indexOf('[');
             var right = optionLine.indexOf(']');
@@ -34,11 +33,11 @@ function oldTranslate(config, v, i, callback) {
             }
 
             expressions = config.match(/\$\{[^\}]*\}/g);
-            expressions = expressions == null ? [] : expressions;
+            expressions = expressions === null ? [] : expressions;
 
             for (e = 0; e < expressions.length; e++) {
                 expr = expressions[e];
-                var newExpr = expr.replace('v_index', '' + (options.indexOf(v) + 1));
+                var newExpr = expr.replace('v_index', (options.indexOf(v) + 1).toString());
 
                 config = config.replace(expr, newExpr);
 
@@ -64,10 +63,8 @@ function oldTranslate(config, v, i, callback) {
 
     config = config.substr(repeatLength, config.length - repeatLength);
 
-    callback(config)
-
+    callback(config);
 }
-
 
 function configRequest(req, value, callback) {
     var path = url.parse(req.url).pathname;
@@ -75,10 +72,9 @@ function configRequest(req, value, callback) {
     var filePath = appRoot + '/public/' + value + '/conf' + configLocation;
     var v = req.query.v;
     var i = req.query.i;
-    console.log(v);
-    fileHelper.readFile(filePath, function (error, config) {
-        oldTranslate(config, v, i, function (data) {
+    fileHelper.readFile(filePath, function(error, config) {
+        oldTranslate(config, v, i, function(data) {
             callback(data);
-        })
+        });
     });
 }
