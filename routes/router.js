@@ -21,7 +21,8 @@ module.exports = (function() {
 
     config.configFolders.forEach(function(configDir) {
         router.get('/' + configDir + '/', function(req, res) {
-            if (req.url.substr(-1) !== '/' && req.url.length > 1) {
+            console.log(req.path);
+            if (req.path === ('/' + configDir)) {
                 res.redirect(req.url +  '/');
             } else {
                 res.sendFile(appRoot + '/public/index.htm');
