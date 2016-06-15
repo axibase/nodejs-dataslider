@@ -10,8 +10,6 @@ var url = require('url');
 var fileHelper = require('../helpers/file-helper');
 var Parser = require('../public/js/parser').Parser;
 var templateConfiger = require('../helpers/config-templater');
-var apicache  = require('apicache');
-var cache     = apicache.middleware;
 
 module.exports = (function () {
     var router = express.Router();
@@ -26,18 +24,18 @@ module.exports = (function () {
     var dirs = [];
 
     config.configFolders.forEach(function (configDir) {
-        router.get('/' + configDir + '?\/', cache('1 hour'), function (req, res) {
+        router.get('/' + configDir + '?\/', function (req, res) {
             res.sendFile(appRoot + '/public/index.htm');
         });
 
         router.get('/' + configDir + '/title.htm', function (req, res) {
-            res.sendFile(appRoot + '/' + configDir + '/conf/title.htm');
+            res.sendFile(appRoot + '/public/' + configDir + '/conf/title.htm');
         });
 
         router.get('/' + configDir + '/full_index', function (req, res) {
 
 
-            var dir = '/' + configDir;
+            var dir = '/public/' + configDir;
             if (dirs.indexOf(dir) > -1) {
                 logger.info('index exists for ' + dir);
                 res.json({

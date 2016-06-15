@@ -72,7 +72,7 @@ function oldTranslate(config, v, i, callback) {
 function configRequest(req, value, callback) {
     var path = url.parse(req.url).pathname;
     var configLocation = path.split(value)[1];
-    var filePath = appRoot + '/' + value + '/conf' + configLocation;
+    var filePath = appRoot + '/public/' + value + '/conf' + configLocation;
     var v = req.query.v;
     var i = req.query.i;
     console.log(v);
