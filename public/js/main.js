@@ -4,6 +4,24 @@ var fixed = true;
 
 var _parseConfiguration = parseConfiguration;
 
+/**
+  * Root folder where application started
+  * @param href
+  * @returns {*}
+  */
+    function getRootURL(href) {
+            var slashPositions = [];
+            for (var i = 0; i < href.length; i++) {
+                    if (href.charAt(i) === '/') {
+                            slashPositions.push(i);
+                        }
+                }
+            var count  = slashPositions.length - 1;
+            return (count > 2) ? href.substring(0, slashPositions[count - 1]) : null;
+        }
+
+var rootUrl = getRootURL(window.location.href);
+
 parseConfiguration = function(configText) {
     function cropConfig(wholeConfig) {
         var croppedConfig = '';
@@ -280,7 +298,7 @@ function goToSlide(ind) {
                         for (var ww = 0; ww < group; ww++) {
                             widget = config.widget[w];
 
-                            widget.path = '/api/v1/series/query';
+                            widget.path = rootUrl + '/api/series';
 
                             html += '<div id=widget-' + w + ' align=center style="width: ' + (Math.floor(100 / group) - 1) + '%; height: auto"></div>\n';
 
@@ -289,7 +307,7 @@ function goToSlide(ind) {
                     } else if (config.order[e] === 'widget') {
                         widget = config.widget[w];
 
-                        widget.path = '/api/v1/series/query';
+                        widget.path = rootUrl + '/api/series/';
 
                         if (widget.type === 'table') {
                             html += '<div id=widget-' + w + ' align=center style="width:  50%; height: auto"></div>\n'

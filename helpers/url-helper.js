@@ -20,5 +20,4 @@ function referrerYear(url) {
     } else {
         return NaN;
     }
-    return NaN;
 }
