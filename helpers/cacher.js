@@ -19,15 +19,14 @@ Cacher.prototype.cache = function(req, callback) {
     var currentYear = new Date().getFullYear();
     var referrerYear = urlHelper.refererYear(req.header('referer'));
     logger.info('cache', 'filename %j', filename);
-    fs.access(filename, fs.F_OK, function(err) {
-        if (err) {
-            fs.access(_this._cacheFolder, fs.F_OK, function(err) {
-                if (err) {
+    fs.exists(filename, function(exist) {
+        if (!exist) {
+            fs.exists(_this._cacheFolder, function(folderExist) {
+                if (!folderExist) {
                     logger.info('creating data folder: ' + _this._cacheFolder);
                     fs.mkdir(_this._cacheFolder, 511, function(err) {
                         if (err) {
                             logger.error('Cache: ', 'failed to create cache folder %j! %j', _this._cacheFolder, err);
-                            throw err;
                         }
                     });
                 }
