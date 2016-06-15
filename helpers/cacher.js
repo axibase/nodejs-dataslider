@@ -17,7 +17,7 @@ Cacher.prototype.handleRequest = function (body, callback) {
     // Cashing data
     var filename = crypto.createHash('md5');
     filename.update(body.toString());
-    filename = Cacher.cahcheFolder + '/' + filename.digest('hex');
+    filename = filename.digest('hex');
     var currentYear = new Date().getFullYear();
 
     var referrerYear = 2016;
