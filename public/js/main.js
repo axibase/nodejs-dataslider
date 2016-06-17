@@ -1,75 +1,31 @@
+"use strict";
 var isIE = !!document.documentMode;
 
 var fixed = true;
 
-var _parseConfiguration = parseConfiguration;
 
 /**
-  * Root folder where application started
-  * @param href
-  * @returns {*}
-  */
-    function getRootURL(href) {
-            var slashPositions = [];
-            for (var i = 0; i < href.length; i++) {
-                    if (href.charAt(i) === '/') {
-                            slashPositions.push(i);
-                        }
-                }
-            var count  = slashPositions.length - 1;
-            return (count > 2) ? href.substring(0, slashPositions[count - 1]) : null;
+ * Root folder where application started
+ * @param href
+ * @returns {*}
+ */
+function getRootURL(href) {
+    var slashPositions = [];
+    for (var i = 0; i < href.length; i++) {
+        if (href.charAt(i) === '/') {
+            slashPositions.push(i);
         }
+    }
+    var count = slashPositions.length - 1;
+    return (count > 2) ? href.substring(0, slashPositions[count - 1]) : null;
+}
 
 var rootUrl = getRootURL(window.location.href);
 
-parseConfiguration = function(configText) {
-    function cropConfig(wholeConfig) {
-        var croppedConfig = '';
-
-        var types = [
-            'configuration',
-            'index',
-            'text',
-            'html',
-            'widget',
-            'group'
-        ];
-        var type = 'else';
-
-        var lines = wholeConfig.split('\n');
-
-        for (var p = 0; p < lines.length; p++) {
-            var line = lines[p];
-            var lineTrimmed = line.trim();
-
-            var possibleType = lineTrimmed.substr(1, lineTrimmed.length - 2);
-            if (/^\[.*\]/.test(lineTrimmed) && types.indexOf(possibleType) > -1) {
-                type = possibleType;
-
-                if (type === 'widget') {
-                    croppedConfig += '[widget]\n';
-                } else if (type === 'group') {
-                    croppedConfig += '[group]\n';
-                }
-            } else {
-                if (type === 'widget' || type === 'group') {
-                    croppedConfig += line + '\n';
-                }
-            }
-        }
-
-        croppedConfig = '[configuration]\n  height-units = 1\n  width-units = 2\n\n' + croppedConfig;
-
-        return croppedConfig;
-    }
-
-    arguments[0] = cropConfig(configText);
-    return _parseConfiguration.apply(this, arguments);
-};
 
 function httpGetAsync(theUrl, callback) {
     var xmlHttp = new XMLHttpRequest();
-    xmlHttp.onreadystatechange = function() {
+    xmlHttp.onreadystatechange = function () {
         if (xmlHttp.readyState == 4 && xmlHttp.status == 200)
             callback(xmlHttp.responseText);
     };
@@ -267,8 +223,8 @@ function goToSlide(ind) {
             .fadeIn('fast');
 
         $('input[name="page"]')
-            .keydown(function(e) {
-                if(e.which == 13) { // enter
+            .keydown(function (e) {
+                if (e.which == 13) { // enter
                     goToSlide(parseInt($('input[name="page"]').val()) - 1);
                 }
             });
@@ -283,7 +239,12 @@ function goToSlide(ind) {
 
             loadWidgets(path, function (result) {
                 config.widget = result;
-
+                for (var i = 0; i < config.widget.length; i++) {
+                    var w = config.widget[i];
+                    for (var j = 0; j < w.series.length; j++) {
+                        w.series[j].path = rootUrl + '/api/series';
+                    }
+                }
                 var html = '';
 
                 var g, w, i, t, h;
@@ -298,7 +259,6 @@ function goToSlide(ind) {
                         for (var ww = 0; ww < group; ww++) {
                             widget = config.widget[w];
 
-                            widget.path = rootUrl + '/api/series';
 
                             html += '<div id=widget-' + w + ' align=center style="width: ' + (Math.floor(100 / group) - 1) + '%; height: auto"></div>\n';
 
@@ -307,7 +267,6 @@ function goToSlide(ind) {
                     } else if (config.order[e] === 'widget') {
                         widget = config.widget[w];
 
-                        widget.path = rootUrl + '/api/series/';
 
                         if (widget.type === 'table') {
                             html += '<div id=widget-' + w + ' align=center style="width:  50%; height: auto"></div>\n'
@@ -316,7 +275,7 @@ function goToSlide(ind) {
                         }
 
                         w++;
-                    }  else if (config.order[e] === 'index') {
+                    } else if (config.order[e] === 'index') {
                         var index = config.index[i];
 
                         html += '<h3>';
@@ -551,7 +510,7 @@ function resize() {
     $("#title").bigText();
     $("#title-r").bigText();
 
-    selectWidgets().forEach(function(widget) {
+    selectWidgets().forEach(function (widget) {
         var size = resizeWidget.getDefaultSize(widget.config);
         var type = widget.config.type;
 
@@ -568,9 +527,9 @@ function resize() {
         resizeWidget(widget, size);
     });
 
-    var body      = $('body');
+    var body = $('body');
     var outerView = $('#outer-view');
-    var view      = $('#view');
+    var view = $('#view');
 
     var bodyHeight = body.outerHeight(true);
     var viewHeight = !isIE ? view.outerHeight(true) : view.get(0).scrollHeight;
@@ -598,9 +557,9 @@ function resize() {
     }
 }
 
-(function($){
+(function ($) {
     $.fn.extend({
-        thenResize: function() {
+        thenResize: function () {
             resize();
             return $(this);
         }
@@ -623,7 +582,7 @@ function everythingElse() {
         }
     }
 
-    httpGetAsync('full_index', function(index) {
+    httpGetAsync('full_index', function (index) {
         index = JSON.parse(index);
 
         console.log(index);
@@ -663,7 +622,7 @@ function everythingElse() {
                     + '<a data-toggle="collapse" data-parent="#accordion" href="#section-' + i + '">' + section.title + '</a>'
                     + '</h4>'
                     + '</div>'
-                    +  '<div id="section-' + i + '" class="panel-collapse collapse">'
+                    + '<div id="section-' + i + '" class="panel-collapse collapse">'
                     + '<div class="panel-body">';
 
                 for (p = 0; p < section.pages.length; p++) {
@@ -689,7 +648,7 @@ function everythingElse() {
         $("#accordion")
             .html(indexHTML);
 
-        document.getElementById('fullscreen').onclick = function(argument) {
+        document.getElementById('fullscreen').onclick = function (argument) {
             var docelem = document.documentElement;
 
             if (docelem.requestFullscreen) {
@@ -730,7 +689,7 @@ function everythingElse() {
         goToSlide(sl);
     });
 
-    $("body").keydown(function(e) {
+    $("body").keydown(function (e) {
         if (e.which == 37) { // left
             goToSlide(slide - 1);
         } else if (e.which == 39) { // right
@@ -738,30 +697,30 @@ function everythingElse() {
         }
     });
 
-    $('#alter').on('click', function() {
+    $('#alter').on('click', function () {
         var panel = $('#slide-panel');
 
         if (panel.hasClass("visible")) {
-            panel.removeClass('visible').animate({'margin-left':'-300px'});
-            setTimeout(function() {
+            panel.removeClass('visible').animate({'margin-left': '-300px'});
+            setTimeout(function () {
                 panel.css('display', 'none');
             }, 500);
-            $('#alter').animate({'margin-left':'-25px'});
+            $('#alter').animate({'margin-left': '-25px'});
         } else {
-            panel.css('display', 'block').addClass('visible').animate({'margin-left':'0px'});
-            $('#alter').animate({'margin-left':'-35px'});
+            panel.css('display', 'block').addClass('visible').animate({'margin-left': '0px'});
+            $('#alter').animate({'margin-left': '-35px'});
         }
 
         return false;
     });
 
     var resizeId;
-    $(window).resize(function() {
+    $(window).resize(function () {
         clearTimeout(resizeId);
         resizeId = setTimeout(doneResizing, 100);
     });
 
-    function doneResizing(){
+    function doneResizing() {
         resize();
     }
 }
