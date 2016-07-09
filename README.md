@@ -2,4 +2,4 @@
  
 Energinet Dataslider [Live Example](http://apps.axibase.com/slider)
 
-!()[http://imgur.com/NWPcFGu]
+![](http://imgur.com/NWPcFGu)
