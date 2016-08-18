@@ -158,6 +158,8 @@ function parseConfig(clConfig) {
         }
     }
 
+    console.log(config);
+
     return config;
 }
 
@@ -238,11 +240,14 @@ function goToSlide(ind) {
             var config = parseConfig(clConfig);
 
             loadWidgets(path, function (result) {
+
                 config.widget = result;
+                config.widget.contextpath = '';
                 for (var i = 0; i < config.widget.length; i++) {
                     var w = config.widget[i];
                     for (var j = 0; j < w.series.length; j++) {
                         w.series[j].path = rootUrl + '/api/series';
+                        w.series[j].contextpath = '';
                     }
                 }
                 var html = '';
