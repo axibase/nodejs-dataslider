@@ -5,7 +5,6 @@ var fileHelper = require('../helpers/file-helper');
 var expect = chai.expect;
 var appRoot = require('app-root-path');
 
-
 describe('File Function', function() {
 
     it('app file exist', function() {
@@ -14,7 +13,6 @@ describe('File Function', function() {
     });
 
     it('read properties correctly', function() {
-        var path = appRoot + '/other/index.htm';
         expect(fileHelper.readApiOptions).to.be.not.undefined;
         var options = fileHelper.readApiOptions();
         expect(options).to.be.not.undefined;
