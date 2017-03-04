@@ -265,7 +265,7 @@ function goToSlide(ind) {
                             widget = config.widget[w];
 
 
-                            html += '<div id=widget-' + w + ' align=center style="width: ' + (Math.floor(100 / group) - 1) + '%; height: auto"></div>\n';
+                            html += '<div id=widget-' + w + ' align=center style="width: ' + (Math.floor(100 / group) - 1) + '%"></div>\n';
 
                             w++;
                         }
@@ -274,9 +274,9 @@ function goToSlide(ind) {
 
 
                         if (widget.type === 'table') {
-                            html += '<div id=widget-' + w + ' align=center style="width:  50%; height: auto"></div>\n'
+                            html += '<div id=widget-' + w + ' align=center style="width:  50%"></div>\n'
                         } else {
-                            html += '<div id=widget-' + w + ' align=center style="width: 100%; height: auto"></div>\n';
+                            html += '<div id=widget-' + w + ' align=center style="width: 100%"></div>\n';
                         }
 
                         w++;

@@ -39,6 +39,10 @@ html, body {
     margin: 0;
 }
 
+.widget-box{
+    height: 60%;
+}
+
 .navbar-brand {
     position: absolute;
     width: 100%;
@@ -57,7 +61,7 @@ html, body {
 }
 
 #title {
-    font-family: 'Open Sans';
+    font-family: 'Open Sans', serif;
 }
 
 .axi-chart-background:not([stroke]), .axi-chart-axis line:not([stroke]), .axi-chart-axis path:not([stroke]) {
@@ -65,7 +69,7 @@ html, body {
 }
 
 .axi-table-cell, .axi-table-thead, .axi-table-tbody {
-    font-family: 'Open Sans';
+    font-family: 'Open Sans', serif;
     border-style: solid;
     border-color: white;
 }
@@ -79,7 +83,7 @@ html, body {
 .axi-table-th {
     padding: 5px 10px 5px 10px;
     font-size: 200%;
-    font-family: 'Open Sans' ';
+    font-family: 'Open Sans' ';,serif
 }
 
 .axi-controls-item,
@@ -91,11 +95,11 @@ html, body {
 .title,
 .subtitle {
     font-size: 150%;
-    font-family: 'Open Sans';
+    font-family: 'Open Sans', serif;
 }
 
 .axi-chart-axis-left {
-    font-family: 'Open Sans';
+    font-family: 'Open Sans', serif;
 }
 
 .axi-table-container {
@@ -140,7 +144,7 @@ html, body {
     bottom: 0;
     width: 100%;
     height: 50px;
-    font-family: Open Sans;
+    font-family: Open Sans, serif;
 }
 
 .footer-r {
@@ -148,7 +152,7 @@ html, body {
     bottom: 0;
     width: 100%;
     height: 50px;
-    font-family: Open Sans;
+    font-family: Open Sans, serif;
 }
 
 .item {
@@ -167,11 +171,11 @@ html, body {
 ul {
     display: table;
     margin: 0 auto;
-    font-family: 'Open Sans';
+    font-family: 'Open Sans', serif;
 }
 
 h3 {
-    font-family: 'Open Sans';
+    font-family: 'Open Sans', serif;
 }
 
 #title, #title-r {
