@@ -17,6 +17,7 @@
   "engine": "node 0.4.1",
   "main": "app.js",
   "scripts": {
+    "start": "node --expose-gc app.js",
     "jshint": "node_modules/jshint/bin/jshint helpers/*.js routes/*.js app.js",
     "jscs": "node_modules/jscs/bin/jscs helpers/*.js routes/*.js app.js"
   },
