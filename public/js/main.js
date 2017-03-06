@@ -565,9 +565,9 @@ function refreshWidgets() {
         var widgetId = 'widget-' + index;
         console.log('updateWidget' + widgetId);
         var widgetBox = $('#' + widgetId);
-        widgetBox.fadeOut('fast');
         updateWidget(widget, widgetId);
-        widgetBox.fadeIn(500);
+        widgetBox.fadeIn('slow');
+
     });
 }
 function everythingElse() {
@@ -705,6 +705,7 @@ function everythingElse() {
 
         if (panel.hasClass("visible")) {
             panel.removeClass('visible').animate({'margin-left': '-300px'});
+            refreshWidgets();
             setTimeout(function () {
                 panel.css('display', 'none');
                 refreshWidgets();
