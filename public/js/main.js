@@ -310,7 +310,7 @@ function goToSlide(ind) {
                         var htm = config.html[h];
 
                         for (var hh = 0; hh < htm.length; hh++) {
-                            html += htm[hh];
+                            html += '<div class="html-content" style="height:' +  100/config.order.length +'%">' + htm[hh] + '</div>';
                         }
 
                         h++;
