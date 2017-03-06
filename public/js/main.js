@@ -276,7 +276,7 @@ function goToSlide(ind) {
                         widget = config.widget[w];
 
                         if (widget.type === 'table') {
-                            html += '<div id=widget-' + w + ' align=center style="width: 50%; height: 200px"></div>\n';
+                            html += '<div id=widget-' + w + ' align=center style="width: 50%; height:' +  100 / config.order.length  + '%"></div>\n';
                         } else {
                             html += '<div id=widget-' + w + ' align=center style="width: 100%; height: ' + 100 / config.order.length + '%"></div>\n';
                         }

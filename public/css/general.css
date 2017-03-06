@@ -168,8 +168,10 @@ div#widget-content {
     width: 100%;
     overflow: hidden;
     padding: 5% 10%;
-    vertical-align: middle;
+    text-align: center;
 }
+
+
 
 .footer {
     position: absolute;
