@@ -164,6 +164,108 @@ function parseConfig(clConfig) {
 var slide = 0;
 var sequence = [];
 var sections = [];
+var slideConfig = null;
+
+function updateWidgetContainers(config) {
+    var g, w, i, t, h;
+    g = w = i = t = h = 0;
+
+    var widget;
+
+    var viewHeight = $('.view').height();
+
+    var html = '<div id="centered">';
+
+
+    for (var e = 0; e < config.order.length; e++) {
+        if (config.order[e] === 'group') {
+            var group = config.group[g];
+
+            for (var ww = 0; ww < group; ww++) {
+                widget = config.widget[w];
+
+                html += '<div id=widget-' + w + ' align=center style="width: ' + (Math.floor(100 / group) - 1) + '%;height:' + (viewHeight - 50) + 'px"></div>\n';
+                widgets.push(widget);
+
+                w++;
+            }
+        } else if (config.order[e] === 'widget') {
+            widget = config.widget[w];
+
+            if (widget.type.toLowerCase() === 'table') {
+                html += '<div id=widget-' + w + ' align=center style="width: 50%; height:' + viewHeight / config.order.length + 'px"></div>\n';
+            } else {
+                html += '<div id=widget-' + w + ' align=center style="width: 100%; height: ' + viewHeight / config.order.length + 'px"></div>\n';
+            }
+            widgets.push(widget);
+            w++;
+        } else if (config.order[e] === 'index') {
+            var index = config.index[i];
+
+            html += '<h3>';
+
+            for (var l = 0; l < index.length; l++) {
+                html += '<p><a href="javascript:goToSlide(' + index[l].slide + ');">' + index[l].title + '</a></p>';
+            }
+
+            html += '</h3>';
+
+            i++;
+        } else if (config.order[e] === 'text') {
+            var text = config.text[t];
+
+            html += '<ul style="list-style-type:disc"><h3>';
+
+            for (var b = 0; b < text.length; b++) {
+                html += '<li>' + text[b] + '</li>';
+            }
+
+            html += '</h3></ul>';
+
+            t++;
+        } else if (config.order[e] === 'html') {
+            var htm = config.html[h];
+
+            for (var hh = 0; hh < htm.length; hh++) {
+                html += '<div class="html-content">' + htm[hh] + '</div>';
+            }
+
+            h++;
+        }
+    }
+
+    if (config.configuration !== undefined) {
+        if (config.configuration.title !== undefined) {
+            $('#title')
+                .hide()
+                .html(config.configuration.title)
+                .bigText()
+                .fadeIn('fast');
+
+            $('#title-r')
+                .hide()
+                .html(config.configuration.title)
+                .bigText()
+                .fadeIn('fast');
+
+            document.title = config.configuration.title;
+        }
+
+        if (config.configuration.footnote !== undefined) {
+            html += '<h3 align=center>' + config.configuration.footnote + '</h3>\n';
+        }
+    }
+
+    //html += '<div style="width:100%; height: auto"></div>';
+    html += '</div>';
+
+    $('#view')
+        .hide()
+        .html(html)
+        .fadeIn('fast');
+    return w;
+}
+
 
 function goToSlide(ind) {
     widgets.splice(0, widgets.length);
@@ -178,6 +280,7 @@ function goToSlide(ind) {
 
     httpGetAsync(path, function (clConfig) {
         if (clConfig === '') return;
+        $('#view').empty();
 
         var oldElem = $('#elem-' + slide);
         var newElem = $('#elem-' + ind);
@@ -208,6 +311,7 @@ function goToSlide(ind) {
             oldCollapse.removeClass('in').addClass('collapse').css("height", "0");
             oldHeader.removeClass('open');
         }
+
 
         if (newCollapse.hasClass('panel-collapse')) {
             newCollapse.removeClass('collapse').addClass('in').css("height", "auto");
@@ -249,103 +353,8 @@ function goToSlide(ind) {
                         w.series[j].contextpath = '';
                     }
                 }
-
-                var g, w, i, t, h;
-                g = w = i = t = h = 0;
-
-                var widget;
-
-                var viewHeight = $('.view').height();
-
-                var html = '';
-
-
-                for (var e = 0; e < config.order.length; e++) {
-                    if (config.order[e] === 'group') {
-                        var group = config.group[g];
-
-                        for (var ww = 0; ww < group; ww++) {
-                            widget = config.widget[w];
-
-                            html += '<div id=widget-' + w + ' align=center style="width: ' + (Math.floor(100 / group) - 1) + '%;height:100%"></div>\n';
-                            widgets.push(widget);
-
-                            w++;
-                        }
-                    } else if (config.order[e] === 'widget') {
-                        widget = config.widget[w];
-
-                        if (widget.type === 'table') {
-                            html += '<div id=widget-' + w + ' align=center style="width: 50%; height:' +  100 / config.order.length  + '%"></div>\n';
-                        } else {
-                            html += '<div id=widget-' + w + ' align=center style="width: 100%; height: ' + 100 / config.order.length + '%"></div>\n';
-                        }
-                        widgets.push(widget);
-                        w++;
-                    } else if (config.order[e] === 'index') {
-                        var index = config.index[i];
-
-                        html += '<h3>';
-
-                        for (var l = 0; l < index.length; l++) {
-                            html += '<p><a href="javascript:goToSlide(' + index[l].slide + ');">' + index[l].title + '</a></p>';
-                        }
-
-                        html += '</h3>';
-
-                        i++;
-                    } else if (config.order[e] === 'text') {
-                        var text = config.text[t];
-
-                        html += '<ul style="list-style-type:disc"><h3>';
-
-                        for (var b = 0; b < text.length; b++) {
-                            html += '<li>' + text[b] + '</li>';
-                        }
-
-                        html += '</h3></ul>';
-
-                        t++;
-                    } else if (config.order[e] === 'html') {
-                        var htm = config.html[h];
-
-                        for (var hh = 0; hh < htm.length; hh++) {
-                            html += '<div class="html-content" style="height:' +  100/config.order.length +'%">' + htm[hh] + '</div>';
-                        }
-
-                        h++;
-                    }
-                }
-
-                if (config.configuration !== undefined) {
-                    if (config.configuration.title !== undefined) {
-                        $('#title')
-                            .hide()
-                            .html(config.configuration.title)
-                            .bigText()
-                            .fadeIn('fast');
-
-                        $('#title-r')
-                            .hide()
-                            .html(config.configuration.title)
-                            .bigText()
-                            .fadeIn('fast');
-
-                        document.title = config.configuration.title;
-                    }
-
-                    if (config.configuration.footnote !== undefined) {
-                        html += '<h3 align=center>' + config.configuration.footnote + '</h3>\n';
-                    }
-                }
-
-                html += '<div style="width:100%; height: auto"></div>';
-                html += '';
-
-                $('#view')
-                    .hide()
-                    .html(html)
-                    .fadeIn('fast');
+                slideConfig = config;
+                var w = updateWidgetContainers(config);
 
                 setTimeout(function () {
                     for (var ww = 0; ww < w; ww++) {
@@ -362,6 +371,8 @@ function goToSlide(ind) {
                 $('#' + slide).removeClass().addClass('active');
             });
         } else {
+            $('#view').empty();
+
             var titles = ['title'];
             var title = '';
 
@@ -561,14 +572,15 @@ function resize() {
 })(jQuery);
 
 function refreshWidgets() {
-    widgets.forEach(function (widget, index) {
-        var widgetId = 'widget-' + index;
-        console.log('updateWidget' + widgetId);
-        var widgetBox = $('#' + widgetId);
-        updateWidget(widget, widgetId);
-        widgetBox.fadeIn('slow');
+    if (slide > 0) {
+        var viewHeight = $('.view').height();
 
-    });
+        updateWidgetContainers(slideConfig);
+        widgets.forEach(function (widget, index) {
+            var widgetId = 'widget-' + index;
+            updateWidget(widget, widgetId);
+        });
+    }
 }
 function everythingElse() {
     $('#outer-view').on('change', resize);

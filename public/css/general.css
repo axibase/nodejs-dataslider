@@ -26,6 +26,7 @@ html, body {
 }
 
 [class^="widget-table"], [class^="widget-console"], [class^="widget-property"] {
+    margin-top: 50px;
 }
 
 .axi-tooltip-container {
@@ -170,9 +171,8 @@ div#widget-content {
     padding: 5% 10%;
     justify-content: center;
     align-items: center;
+    display: flex;
 }
-
-
 
 .footer {
     position: absolute;
@@ -320,4 +320,10 @@ div {
 
 div::-webkit-scrollbar {
     display: none;
+}
+
+#centered {
+    width: 100%;
+    height: auto;
+    position: inherit;
 }
