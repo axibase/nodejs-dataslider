@@ -5,9 +5,9 @@ html {
 
 body {
     overflow: auto !important;
-    font-family: 'Open Sans';
+    font-family: 'Open Sans', serif;
     outline: none;
-    min-height: 100%;
+    min-height: 100% !important;
 }
 
 html, body {
@@ -26,7 +26,6 @@ html, body {
 }
 
 [class^="widget-table"], [class^="widget-console"], [class^="widget-property"] {
-    margin-top: 50px;
 }
 
 .axi-tooltip-container {
@@ -79,15 +78,13 @@ html, body {
 }
 
 .axi-table-td {
-    padding: 5px 10px 5px 10px;
     font-size: 150%;
-    font-family: 'Open Sans';
+    font-family: 'Open Sans', serif;
 }
 
 .axi-table-th {
-    padding: 5px 10px 5px 10px;
-    font-size: 200%;
-    font-family: 'Open Sans' ';,serif
+    font-size: 150%;
+    font-family: 'Open Sans', serif
 }
 
 .axi-controls-item,
@@ -115,12 +112,12 @@ html, body {
 }
 
 .title {
-    font-size: 400%;
+    font-size: 5vh;
     font-weight: bold;
 }
 
 .subtitle {
-    font-size: 200%;
+    font-size: 3vh;
 }
 
 .clearfix {
@@ -322,8 +319,17 @@ div::-webkit-scrollbar {
     display: none;
 }
 
-#centered {
+.centered {
     width: 100%;
     height: auto;
     position: inherit;
 }
+
+.wide-table {
+    width: 100%;
+}
+
+.tiny-table {
+    width: 50%;
+}
+

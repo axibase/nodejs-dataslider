@@ -172,9 +172,11 @@ function updateWidgetContainers(config) {
 
     var widget;
 
-    var viewHeight = $('.view').height();
+    var viewBox = $('#view');
+    var viewHeight = viewBox.height();
+    var viewWidth = viewBox.width();
 
-    var html = '<div id="centered">';
+    var html = '<div class="centered">';
 
 
     for (var e = 0; e < config.order.length; e++) {
@@ -184,16 +186,17 @@ function updateWidgetContainers(config) {
             for (var ww = 0; ww < group; ww++) {
                 widget = config.widget[w];
 
-                html += '<div id=widget-' + w + ' align=center style="width: ' + (Math.floor(100 / group) - 1) + '%;height:' + (viewHeight - 50) + 'px"></div>\n';
+                html += '<div id=widget-' + w + ' align=center style="width: ' + (Math.floor(100 / group) - 1) + '%;height:' + (viewHeight) + 'px"></div>\n';
                 widgets.push(widget);
 
                 w++;
             }
         } else if (config.order[e] === 'widget') {
             widget = config.widget[w];
-
+            var tableWidth = (viewWidth > 900) ? 50 : 100;
+            console.log(tableWidth);
             if (widget.type.toLowerCase() === 'table') {
-                html += '<div id=widget-' + w + ' align=center style="width: 50%; height:' + viewHeight / config.order.length + 'px"></div>\n';
+                html += '<div id=widget-' + w + ' align=center style="width: ' + tableWidth + '%;height:' + viewHeight / config.order.length + 'px"></div>\n';
             } else {
                 html += '<div id=widget-' + w + ' align=center style="width: 100%; height: ' + viewHeight / config.order.length + 'px"></div>\n';
             }
@@ -263,6 +266,12 @@ function updateWidgetContainers(config) {
         .hide()
         .html(html)
         .fadeIn('fast');
+
+
+    for (var widget in widgets) {
+        console.log(widget);
+    }
+
     return w;
 }
 
@@ -280,7 +289,6 @@ function goToSlide(ind) {
 
     httpGetAsync(path, function (clConfig) {
         if (clConfig === '') return;
-        $('#view').empty();
 
         var oldElem = $('#elem-' + slide);
         var newElem = $('#elem-' + ind);
@@ -371,7 +379,6 @@ function goToSlide(ind) {
                 $('#' + slide).removeClass().addClass('active');
             });
         } else {
-            $('#view').empty();
 
             var titles = ['title'];
             var title = '';
@@ -403,7 +410,7 @@ function goToSlide(ind) {
 
             $('#view')
                 .hide()
-                .html(clConfig)
+                .html('<div class="centered">' + clConfig + '</div>')
                 .fadeIn('fast')
                 .thenResize();
         }
@@ -580,6 +587,10 @@ function refreshWidgets() {
             var widgetId = 'widget-' + index;
             updateWidget(widget, widgetId);
         });
+    } else {
+        var viewHeight = $('.view').height();
+        var subtitle = $('p.subtitle');
+        (viewHeight < 500) ? subtitle.hide() : subtitle.show();
     }
 }
 function everythingElse() {
